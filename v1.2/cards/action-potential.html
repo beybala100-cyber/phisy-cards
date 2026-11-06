@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f8f3f1">
+<title>Карточки: Потенциал действия — Нормальная физиология</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<div class="topline"></div>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="../index.html"><span class="brand-mark">φ</span><span>НОРМАЛЬНАЯ<br>ФИЗИОЛОГИЯ</span></a>
+    <nav class="navlinks" id="navlinks">
+      <a href="../notes/index.html">Конспекты</a>
+      <a href="../tests/index.html">Тесты</a>
+      <a href="index.html" class="active">Карточки</a>
+    </nav>
+    <a class="nav-cta" href="index.html">К списку карточек</a>
+    <button class="menu" id="menuBtn" aria-label="Открыть меню">☰</button>
+  </div>
+</header>
+
+<main class="wrap-narrow article">
+  <div class="breadcrumbs"><a href="../index.html">Главная</a> · <a href="index.html">Карточки</a> · Работа клетки</div>
+  <h1>Потенциал действия</h1>
+  <p class="article-lead">Набор карточек по теме. Нажми на карточку, чтобы перевернуть её и увидеть объяснение.</p>
+  <div class="meta">Раздел: работа клетки · 5 карточек</div>
+
+  <div class="flash-wrap">
+    <div class="flash-card" id="flashCard" tabindex="0" role="button" aria-label="Карточка, нажмите, чтобы перевернуть">
+      <div class="flash-face front" id="flashFront"></div>
+      <div class="flash-face back" id="flashBack"></div>
+    </div>
+  </div>
+
+  <div class="flash-progress" id="flashProgress">1 / 5</div>
+  <div class="flash-nav">
+    <button class="flash-arrow" id="prevBtn" aria-label="Предыдущая карточка">←</button>
+    <button class="flash-arrow" id="nextBtn" aria-label="Следующая карточка">→</button>
+  </div>
+  <div class="flash-dots" id="flashDots"></div>
+
+  <div class="article-footer">
+    <a href="potential-rest.html">← Предыдущая тема: Потенциал покоя</a>
+    <a href="index.html">Все карточки →</a>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <div><div class="footer-brand">φ Нормальная физиология</div><p>Учебные материалы для студентов медицинских вузов · <span id="year"></span></p></div>
+    <div class="footer-links">
+      <a href="../index.html">Главная</a>
+      <a href="../notes/index.html">Конспекты</a>
+      <a href="../tests/index.html">Тесты</a>
+    </div>
+  </div>
+</footer>
+<script>
+const menuBtn=document.getElementById('menuBtn'), nav=document.getElementById('navlinks');
+menuBtn.addEventListener('click',()=>nav.classList.toggle('open'));
+document.getElementById('year').textContent=new Date().getFullYear();
+
+const cards = [
+  {
+    tag: 'ОПРЕДЕЛЕНИЕ',
+    front: 'Что такое потенциал действия?',
+    back: 'Быстрое изменение мембранного потенциала в ответ на пороговое раздражение. Распространяется по мембране без затухания и служит основой передачи сигналов.'
+  },
+  {
+    tag: 'ДЕПОЛЯРИЗАЦИЯ',
+    front: 'Что происходит на фазе деполяризации?',
+    back: 'Открываются потенциал-зависимые Na⁺-каналы, Na⁺ входит в клетку по электрохимическому градиенту, мембранный потенциал быстро смещается от –70 мВ до +20…+35 мВ.'
+  },
+  {
+    tag: 'РЕПОЛЯРИЗАЦИЯ',
+    front: 'Что происходит на фазе реполяризации?',
+    back: 'Na⁺-каналы инактивируются, открываются K⁺-каналы. K⁺ выходит из клетки, мембранный потенциал возвращается к уровню покоя.'
+  },
+  {
+    tag: 'ПРАВИЛО',
+    front: 'В чём суть закона «всё или ничего»?',
+    back: 'Если стимул ниже порога — потенциал действия не возникает. Если порог достигнут — амплитуда потенциала действия одинакова при любом надпороговом стимуле.'
+  },
+  {
+    tag: 'РАСПРОСТРАНЕНИЕ',
+    front: 'Как распространяется потенциал действия?',
+    back: 'За счёт локальных токов, деполяризующих соседние участки мембраны до порога. В миелинизированных волокнах — сальтаторно, от перехвата Ранвье к перехвату, что ускоряет проведение.'
+  }
+];
+
+const cardEl = document.getElementById('flashCard');
+const frontEl = document.getElementById('flashFront');
+const backEl = document.getElementById('flashBack');
+const progressEl = document.getElementById('flashProgress');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const dotsEl = document.getElementById('flashDots');
+
+let index = 0;
+cards.forEach((_, i) => {
+  const d = document.createElement('span');
+  d.className = 'flash-dot' + (i === 0 ? ' active' : '');
+  dotsEl.appendChild(d);
+});
+const dots = [...dotsEl.children];
+
+function render() {
+  const c = cards[index];
+  cardEl.classList.remove('flipped');
+  frontEl.innerHTML = `<span class="flash-tag">${c.tag}</span><h3>${c.front}</h3><span class="flash-hint">Нажми, чтобы перевернуть ↻</span>`;
+  backEl.innerHTML = `<span class="flash-tag">ОТВЕТ</span><h3>${c.front}</h3><p>${c.back}</p>`;
+  progressEl.textContent = `${index + 1} / ${cards.length}`;
+  prevBtn.disabled = index === 0;
+  nextBtn.disabled = index === cards.length - 1;
+  dots.forEach((d, i) => d.classList.toggle('active', i === index));
+}
+
+cardEl.addEventListener('click', () => cardEl.classList.toggle('flipped'));
+cardEl.addEventListener('keydown', (e) => {
+  if (e.key === ' ' || e.key === 'Enter') {
+    e.preventDefault();
+    cardEl.classList.toggle('flipped');
+  }
+});
+prevBtn.addEventListener('click', () => { if (index > 0) { index--; render(); } });
+nextBtn.addEventListener('click', () => { if (index < cards.length - 1) { index++; render(); } });
+
+render();
+</script>
+</body>
+</html>
